@@ -23,7 +23,6 @@ const readDir = (base, level) => {
                     readDir(localBase, level + 1);
                 } else {
                     const firstLetter = item.toString()[0];
-                    console.log('first letter: ', firstLetter);
                     const letterDir = path.join("./newIcons", firstLetter);
                     const newBase = path.join(letterDir, item);
                     if (!fs.existsSync(letterDir)) {
