@@ -5,13 +5,13 @@ const base = "./icons";
 
 const sortIcons = async function (from) {
     const createFinalDir = function () {
-        return new Promise(resolve => {
+        return new Promise((resolve, reject) => {
             if (!fs.existsSync("./newIcons")) {
-                fs.mkdir("./newIcons", (err, data) => {
-                    if (err) {
-                        console.log("err1: ", err);
-                    }
-                })
+                try {
+                    fs.mkdirSync("./newIcons")
+                } catch (error) {
+                    reject(error);
+                }
             }
             resolve();
         })
@@ -31,24 +31,24 @@ const sortIcons = async function (from) {
                     const letterDir = path.join("./newIcons", firstLetter);
                     const newBase = path.join(letterDir, item);
                     const createAlbhabetDir = function () {
-                        return new Promise(resolve => {
+                        return new Promise((resolve, reject) => {
                             if (!fs.existsSync(letterDir)) {
-                                fs.mkdir(letterDir, (err, data) => {
-                                    if (err) {
-                                        console.log("err2: ", err);
-                                    }
-                                })
+                                try {
+                                    fs.mkdirSync(letterDir);
+                                } catch (error) {
+                                    reject(error);
+                                }
                             }
                             resolve();
                         })
                     }
                     const copyFile = async function () {
                         await createAlbhabetDir();
-                        fs.copyFile(localBase, newBase, err => {
-                            if (err) {
-                                console.log("copyFile error: ", err);
-                            }
-                        });
+                        try {
+                            fs.copyFileSync(localBase, newBase)
+                        } catch (error) {
+                            console.log("copyFile error: ", error);
+                        }
                     }
                     copyFile();
                 }
